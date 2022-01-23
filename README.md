@@ -1,4 +1,4 @@
-# chunagon
+# chunagon-dash
 
 front end app
 

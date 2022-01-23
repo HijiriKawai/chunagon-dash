@@ -10,7 +10,6 @@ import AnswerRequest from '../../../models/AnswerRequest';
 import DescAndUrl from '../../../models/DescAndUrl';
 import { QuestionDetailResponse, Tag } from '../../../models/QuestionDetailResponse';
 import baseUrl from '../../../utils/ApiUrl';
-import { ConvertAllCode, ConvertAllToNode, RunAssertions } from '../../../utils/shonagon';
 import { Button } from '../../atoms/Button';
 import { Editor } from '../../atoms/Editor';
 import { Modal } from '../../atoms/Modal';
@@ -82,14 +81,11 @@ export const QuestionAnswer: VFC<QuestionAnswerProps> = (props: QuestionAnswerPr
       }
       console.log = log;
     }
-    const newCode = ConvertAllCode(code) as string;
-    const failedAssertions = RunAssertions(question, ConvertAllToNode(newCode)) as any[];
-    const failedAssertionsId = failedAssertions.map((assertion) => assertion.id) as string[];
-    if (failedAssertions.length === 0 && corrects.length === question.testCases.length) {
+    if (corrects.length === question.testCases.length) {
       const post: AnswerRequest = {
         questionID: question.questionID,
         isCorrect: true,
-        isAssertionUsed: true,
+        isAssertionUsed: false,
         failedAssertions: [],
       };
 
@@ -111,8 +107,8 @@ export const QuestionAnswer: VFC<QuestionAnswerProps> = (props: QuestionAnswerPr
       const post: AnswerRequest = {
         questionID: question.questionID,
         isCorrect: false,
-        isAssertionUsed: true,
-        failedAssertions: failedAssertionsId,
+        isAssertionUsed: false,
+        failedAssertions: [],
       };
 
       axios
@@ -127,16 +123,8 @@ export const QuestionAnswer: VFC<QuestionAnswerProps> = (props: QuestionAnswerPr
       setCorrects([]);
       setResults([]);
       setTitle('失敗');
-      const message = failedAssertions.map((j) => j.message).join('\n');
+      const message = '';
       const tagUrlToName: DescAndUrl[] = [];
-      failedAssertions.forEach((j) =>
-        j.tags.forEach((tag: { tutorial_link: string; name: string }) => {
-          tagUrlToName.push({
-            desc: tag.name,
-            url: tag.tutorial_link,
-          });
-        })
-      );
       const uniqueUrls = tagUrlToName.filter(
         (element, index, self) => self.findIndex((e) => e.url === element.url) === index
       );
