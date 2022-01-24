@@ -123,8 +123,13 @@ export const QuestionAnswer: VFC<QuestionAnswerProps> = (props: QuestionAnswerPr
       setCorrects([]);
       setResults([]);
       setTitle('失敗');
-      const message = '';
-      const tagUrlToName: DescAndUrl[] = [];
+      const message = '答えと回答が合致していません';
+      const tagUrlToName: DescAndUrl[] = [
+        {
+          desc: 'js',
+          url: 'https://developer.mozilla.org/ja/docs/Web/JavaScript',
+        },
+      ];
       const uniqueUrls = tagUrlToName.filter(
         (element, index, self) => self.findIndex((e) => e.url === element.url) === index
       );
