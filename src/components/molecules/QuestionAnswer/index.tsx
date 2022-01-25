@@ -70,7 +70,7 @@ export const QuestionAnswer: VFC<QuestionAnswerProps> = (props: QuestionAnswerPr
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            時間切れです
+            時間切れです 次の問題の移って下さい
           </Typography>
           <Link to="home">一覧に戻る</Link>
         </Box>
